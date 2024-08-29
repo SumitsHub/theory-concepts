@@ -3,6 +3,7 @@
 ## Topics Index
 01. Coding Principles
 02. SonarLint & SonarQube 
+03. Semantic Versioning
 
 
 
@@ -227,3 +228,55 @@ Code smell refers to any symptom in the code that indicates a deeper problem. Wh
 
 
 SonarLint and SonarQube are powerful tools in maintaining and improving code quality by providing real-time feedback and comprehensive analysis. They help developers adhere to best practices, reduce technical debt, and ensure that code remains clean, maintainable, and secure.
+
+
+
+
+### 03. Semantic Versioning
+Semantic Versioning (often abbreviated as SemVer) is a versioning system used widely in the software development world, including for Node.js packages, to manage and communicate changes in a consistent and understandable way.
+It provides a structured approach to versioning that helps developers understand the impact of changes in a software package.
+
+#### The Semantic Versioning Format
+A version number under SemVer is represented as:
+```bash
+MAJOR.MINOR.PATCH
+```
+
+Each part of this version number has a specific meaning:
+
+1. MAJOR: Indicates incompatible API changes. Incrementing this number signifies that the changes made to the package are not backward-compatible. Users of the package may need to modify their code to accommodate these changes.
+
+2. MINOR: Indicates the addition of new functionality in a backward-compatible manner. When this number is incremented, it means new features have been added, but the existing functionality remains unchanged and still works as before.
+
+3. PATCH: Indicates backward-compatible bug fixes. Incrementing this number means that bugs have been fixed without introducing any new features or breaking existing functionality.
+
+#### Example of Semantic Versioning
+Given a version number 2.5.3:
+
+2 is the MAJOR version.
+5 is the MINOR version.
+3 is the PATCH version.
+
+#### Pre-release Versions and Build Metadata
+Semantic Versioning also allows for pre-release versions and build metadata:
+
+Pre-release Versions: Indicated by appending a hyphen and a series of dot-separated identifiers. For example, 1.0.0-alpha, 1.0.0-beta.2. These versions are used to signal that the release is unstable and might not meet the final version's quality requirements.
+
+Build Metadata: Indicated by a plus sign and a series of dot-separated identifiers. For example, 1.0.0+001. Build metadata is ignored when determining version precedence, but it can provide additional information.
+
+#### Versioning and Compatibility
+Backward Compatibility: Semantic Versioning helps maintain backward compatibility by communicating the type of changes through the version number. Consumers of the package can understand if a new version will work with their current setup.
+
+Caret (^) and Tilde (~) Ranges: In package.json, caret (^) and tilde (~) are used to specify compatible version ranges for dependencies:
+
+Caret (^): Allows updates that do not change the leftmost non-zero digit. For example, ^1.2.3 allows versions >=1.2.3 and <2.0.0.
+
+Tilde (~): Allows updates to the patch version, but not the minor version. For example, ~1.2.3 allows versions >=1.2.3 and <1.3.0.
+
+#### Benefits of Semantic Versioning
+Predictability: It clearly indicates the impact of a new version. Developers can expect backward compatibility for MINOR and PATCH changes, and understand that MAJOR changes might require modifications.
+
+Dependency Management: Package managers (like npm) can automatically handle dependency updates based on versioning constraints defined in package.json, making it easier to keep packages up to date while avoiding breaking changes.
+
+Communication: It provides a common language for communicating about changes, making it easier for developers to collaborate and for users to understand the stability and compatibility of a package.
+
