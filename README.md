@@ -6,7 +6,8 @@
 03. Semantic Versioning
 04. Tree Shaking
 05. ESLint and Linting
-06. React Design Patterns  
+06. React Design Patterns
+07. NodeJS Design Patterns 
 
 
 
@@ -683,3 +684,244 @@ const Counter = () => {
 
 ```
 
+
+
+### 07. NodeJS Design Patterns
+1. Module Pattern
+Purpose: Encapsulates code into reusable modules.
+How It Works:
+- Leverages require or import to manage dependencies.
+- Separates functionality into self-contained modules.
+Benefits:
+- Encourages separation of concerns.
+- Simplifies code management and testing.
+
+```js
+// math.js (Module)
+const add = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+module.exports = { add, subtract };
+
+// app.js
+const math = require('./math');
+console.log(math.add(2, 3)); // 5
+
+```
+
+2. Singleton Pattern
+Purpose: Ensures a class or module has only one instance globally.
+How It Works: Exports a single instance of a class or object.
+Benefits: Useful for shared resources like database connections or configurations.
+
+```js
+// logger.js
+class Logger {
+  constructor() {
+    if (!Logger.instance) {
+      Logger.instance = this;
+    }
+    return Logger.instance;
+  }
+  log(message) {
+    console.log(`[LOG]: ${message}`);
+  }
+}
+module.exports = new Logger();
+
+// app.js
+const logger = require('./logger');
+logger.log('Application started');
+
+```
+
+3. Factory Pattern
+Purpose: Creates objects without specifying the exact class or constructor.
+How It Works: Provides a method to instantiate objects based on input.
+Benefits: Useful for creating objects dynamically based on runtime conditions.
+
+```js
+// carFactory.js
+class Sedan {
+  drive() {
+    console.log('Driving a sedan');
+  }
+}
+class SUV {
+  drive() {
+    console.log('Driving an SUV');
+  }
+}
+const carFactory = (type) => {
+  if (type === 'sedan') return new Sedan();
+  if (type === 'suv') return new SUV();
+};
+module.exports = carFactory;
+
+// app.js
+const carFactory = require('./carFactory');
+const car = carFactory('suv');
+car.drive(); // Driving an SUV
+
+```
+
+4. Middleware Pattern
+Purpose: Chains reusable middleware functions to process requests and responses.
+How It Works:
+- Used extensively in web frameworks like Express.
+- Middleware functions handle tasks like logging, authentication, and request parsing.
+Benefits:
+Clean separation of concerns for request handling.
+
+```js
+const express = require('express');
+const app = express();
+
+// Middleware
+app.use((req, res, next) => {
+  console.log(`Request Method: ${req.method}`);
+  next();
+});
+
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+
+```
+
+5. Observer Pattern
+Purpose: Allows one-to-many dependency between objects where one object's state change notifies others.
+How It Works: Commonly implemented using Node.js' built-in EventEmitter.
+Benefits: Useful for real-time applications like chat apps or notifications.
+
+```js
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+
+emitter.on('message', (msg) => {
+  console.log(`Received message: ${msg}`);
+});
+
+emitter.emit('message', 'Hello, Observer!');
+
+```
+
+6. Proxy Pattern
+Purpose: Acts as an intermediary to control access to an object.
+How It Works: Useful for caching, logging, or access control.
+Benefits: Adds additional behavior without altering the original object.
+
+```js
+const fetchData = () => {
+  console.log('Fetching data...');
+  return { data: 'Sample Data' };
+};
+
+const proxy = (function () {
+  let cache = null;
+  return {
+    getData: () => {
+      if (!cache) {
+        cache = fetchData();
+      }
+      return cache;
+    },
+  };
+})();
+
+console.log(proxy.getData());
+console.log(proxy.getData()); // Cached data
+
+```
+
+7. Builder Pattern
+Purpose: Constructs complex objects step by step.
+How It Works: Separates object construction from its representation.
+Benefits: Useful for creating objects with multiple optional properties.
+
+```js
+class User {
+  constructor(name, age, email) {
+    this.name = name;
+    this.age = age;
+    this.email = email;
+  }
+}
+
+class UserBuilder {
+  constructor(name) {
+    this.user = new User(name);
+  }
+  setAge(age) {
+    this.user.age = age;
+    return this;
+  }
+  setEmail(email) {
+    this.user.email = email;
+    return this;
+  }
+  build() {
+    return this.user;
+  }
+}
+
+const user = new UserBuilder('John')
+  .setAge(30)
+  .setEmail('john@example.com')
+  .build();
+
+console.log(user);
+
+```
+
+8. Strategy Pattern
+Purpose: Encapsulates different algorithms or strategies and makes them interchangeable.
+How It Works: Delegates behavior to different strategy objects at runtime.
+Benefits: Reduces conditional logic and promotes flexibility.
+
+```js
+class PayPal {
+  pay(amount) {
+    console.log(`Paid ${amount} using PayPal`);
+  }
+}
+class CreditCard {
+  pay(amount) {
+    console.log(`Paid ${amount} using Credit Card`);
+  }
+}
+
+class PaymentContext {
+  constructor(strategy) {
+    this.strategy = strategy;
+  }
+  execute(amount) {
+    this.strategy.pay(amount);
+  }
+}
+
+const payment = new PaymentContext(new PayPal());
+payment.execute(100);
+
+```
+
+9. Async Pattern (Callback, Promises, and Async/Await)
+Purpose: Handles asynchronous operations efficiently.
+How It Works: Leverages patterns like callbacks, Promises, or async/await for non-blocking operations.
+Benefits: Avoids callback hell and manages complex async workflows.
+
+```js
+const fetchData = async () => {
+  try {
+    const response = await fetch('https://api.example.com/data');
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+fetchData();
+
+```
