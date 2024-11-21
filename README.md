@@ -4,7 +4,9 @@
 01. Coding Principles
 02. SonarLint & SonarQube 
 03. Semantic Versioning
-04. Tree Shaking 
+04. Tree Shaking
+05. ESLint and Linting
+06. React Design Patterns  
 
 
 
@@ -350,3 +352,227 @@ For tree shaking to work effectively, certain conditions should be met:
 
 #### Conclusion
 Tree shaking is a powerful optimization technique that is essential for modern JavaScript development, especially for large-scale applications. By eliminating unused code, it helps developers create faster, leaner, and more efficient applications. Using tree shaking requires writing modular code, choosing libraries that support it, and configuring the build process correctly. As the JavaScript ecosystem continues to evolve, tree shaking remains a key practice for performance optimization.
+
+
+### 05. ESLint and Linting
+
+
+### 06. React Design Patterns
+React applications often use design patterns to create scalable, maintainable, and reusable code.
+
+1. Container-Presenter Pattern
+Purpose: Separates logic (state management) from UI rendering.
+Structure:
+- Container Components: Handle business logic, state, and data fetching.
+- Presenter Components: Pure components responsible for rendering UI.
+Benefits:
+- Clear separation of concerns.
+- Easier to test and maintain.
+
+```js
+// Container Component
+const TodoContainer = () => {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/todos')
+      .then(res => res.json())
+      .then(data => setTodos(data));
+  }, []);
+
+  return <TodoList todos={todos} />;
+};
+
+// Presenter Component
+const TodoList = ({ todos }) => (
+  <ul>
+    {todos.map(todo => (
+      <li key={todo.id}>{todo.title}</li>
+    ))}
+  </ul>
+);
+
+```
+
+2. Higher-Order Component (HOC) Pattern
+Purpose: Reuses component logic by wrapping a component.
+Structure: A function takes a component as input and returns a new component with added functionality.
+Benefits: Promotes code reuse.
+
+```js
+const withLogging = (WrappedComponent) => {
+  return (props) => {
+    useEffect(() => {
+      console.log('Component mounted');
+      return () => console.log('Component unmounted');
+    }, []);
+
+    return <WrappedComponent {...props} />;
+  };
+};
+
+const Button = (props) => <button {...props}>Click me</button>;
+const ButtonWithLogging = withLogging(Button);
+
+```
+
+3. Render Props Pattern
+Purpose: Shares logic between components using a prop that is a function.
+Structure: A component accepts a render function as a prop and uses it to render UI.
+Benefits: Flexible and dynamic composition.
+
+```js
+const MouseTracker = ({ render }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    setPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  return <div onMouseMove={handleMouseMove}>{render(position)}</div>;
+};
+
+const App = () => (
+  <MouseTracker
+    render={({ x, y }) => (
+      <h1>
+        Mouse position: {x}, {y}
+      </h1>
+    )}
+  />
+);
+
+```
+
+4. Custom Hooks Pattern
+Purpose: Encapsulates reusable logic in a custom hook.
+Structure: A custom hook is a JavaScript function that uses React hooks.
+Benefits: Clean and reusable logic for state and side effects.
+
+```js
+const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then(setData)
+      .catch(setError);
+  }, [url]);
+
+  return { data, error };
+};
+
+const App = () => {
+  const { data, error } = useFetch('/api/data');
+
+  if (error) return <div>Error: {error.message}</div>;
+  if (!data) return <div>Loading...</div>;
+
+  return <div>{JSON.stringify(data)}</div>;
+};
+
+```
+
+5. Compound Components Pattern
+Purpose: Allows components to work together as a "compound" while maintaining flexibility.
+Structure: Parent component provides context, and child components use it.
+Benefits: Clean API for users of the component.
+
+```js
+const Tabs = ({ children }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return React.Children.map(children, (child, index) =>
+    React.cloneElement(child, {
+      isActive: index === activeIndex,
+      onClick: () => setActiveIndex(index),
+    })
+  );
+};
+
+const Tab = ({ isActive, onClick, children }) => (
+  <button
+    onClick={onClick}
+    style={{ fontWeight: isActive ? 'bold' : 'normal' }}
+  >
+    {children}
+  </button>
+);
+
+const App = () => (
+  <Tabs>
+    <Tab>Tab 1</Tab>
+    <Tab>Tab 2</Tab>
+    <Tab>Tab 3</Tab>
+  </Tabs>
+);
+
+```
+
+6. Context API Pattern
+Purpose: Shares global state without prop drilling.
+Structure: A Provider supplies data, and consumers access it via useContext.
+Benefits: Avoids passing props through multiple levels.
+
+```js
+const ThemeContext = React.createContext();
+
+const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState('light');
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+const ThemeToggler = () => {
+  const { theme, setTheme } = useContext(ThemeContext);
+  return (
+    <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+      Toggle Theme: {theme}
+    </button>
+  );
+};
+
+const App = () => (
+  <ThemeProvider>
+    <ThemeToggler />
+  </ThemeProvider>
+);
+
+```
+
+7. State Reducer Pattern
+Purpose: Manages complex state transitions in a single location.
+Structure: Uses useReducer or custom reducers for predictable state management.
+Benefits: Simplifies state logic and transitions.
+
+```js
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
+
+const Counter = () => {
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+  return (
+    <div>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+      <span>{state.count}</span>
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+    </div>
+  );
+};
+
+```
+
