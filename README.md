@@ -8,6 +8,7 @@
 05. ESLint and Linting
 06. React Design Patterns
 07. NodeJS Design Patterns
+08. Reactor Pattern
 
 
 
@@ -925,3 +926,41 @@ const fetchData = async () => {
 fetchData();
 
 ```
+
+
+### 08.Reactor Pattern
+#### What is the Reactor Pattern?
+The Reactor Pattern is a design pattern commonly used in 'asynchronous' and 'event-driven' programming to handle I/O operations efficiently. It allows a single thread to manage multiple I/O streams, enabling high concurrency and scalability. This is particularly suitable for servers and applications requiring non-blocking I/O, such as Node.js.
+
+##### Key Concepts of the Reactor Pattern
+1. Event Loop:
+The core of the Reactor Pattern.
+Continuously listens for events and dispatches them to appropriate handlers.
+
+2. De-multiplexer:
+Monitors multiple file descriptors (I/O resources like sockets or files).
+Detects when an I/O operation is ready and notifies the event loop.
+
+3. Event Handlers:
+Functions or callbacks that are triggered to handle specific events.
+
+4. Non-Blocking I/O:
+Avoids waiting for I/O operations to complete. Instead, the program moves on to handle other tasks.
+
+##### How the Reactor Pattern Works
+- The event loop listens for events (e.g., incoming network requests, file read/write readiness).
+- When an event occurs, the de-multiplexer notifies the event loop.
+- The event loop dispatches the event to the appropriate event handler.
+- The event handler processes the event (e.g., reads a file, writes to a socket) and returns control to the event loop.
+
+#### Reactor Pattern in Node.js
+Node.js is a prime example of the Reactor Pattern in action. The libuv library, which powers Node.js, implements the Reactor Pattern for handling asynchronous operations.
+
+Node.js Event Loop
+1. The event loop is at the heart of Node.js.
+2. Handles tasks such as:
+    - I/O operations (file system, network requests).
+    - Timers (e.g., setTimeout, setInterval).
+    - Process events.
+3. Runs in a single thread but can manage thousands of concurrent connections due to its non-blocking nature.
+
