@@ -7,7 +7,7 @@
 04. Tree Shaking
 05. ESLint and Linting
 06. React Design Patterns
-07. NodeJS Design Patterns 
+07. NodeJS Design Patterns
 
 
 
@@ -687,7 +687,7 @@ const Counter = () => {
 
 
 ### 07. NodeJS Design Patterns
-1. Module Pattern
+#### 1. Module Pattern
 Purpose: Encapsulates code into reusable modules.
 How It Works:
 - Leverages require or import to manage dependencies.
@@ -708,7 +708,7 @@ console.log(math.add(2, 3)); // 5
 
 ```
 
-2. Singleton Pattern
+#### 2. Singleton Pattern
 Purpose: Ensures a class or module has only one instance globally.
 How It Works: Exports a single instance of a class or object.
 Benefits: Useful for shared resources like database connections or configurations.
@@ -734,7 +734,7 @@ logger.log('Application started');
 
 ```
 
-3. Factory Pattern
+#### 3. Factory Pattern
 Purpose: Creates objects without specifying the exact class or constructor.
 How It Works: Provides a method to instantiate objects based on input.
 Benefits: Useful for creating objects dynamically based on runtime conditions.
@@ -764,7 +764,7 @@ car.drive(); // Driving an SUV
 
 ```
 
-4. Middleware Pattern
+#### 4. Middleware Pattern
 Purpose: Chains reusable middleware functions to process requests and responses.
 How It Works:
 - Used extensively in web frameworks like Express.
@@ -790,7 +790,7 @@ app.listen(3000, () => console.log('Server running on port 3000'));
 
 ```
 
-5. Observer Pattern
+#### 5. Observer Pattern
 Purpose: Allows one-to-many dependency between objects where one object's state change notifies others.
 How It Works: Commonly implemented using Node.js' built-in EventEmitter.
 Benefits: Useful for real-time applications like chat apps or notifications.
@@ -807,7 +807,7 @@ emitter.emit('message', 'Hello, Observer!');
 
 ```
 
-6. Proxy Pattern
+#### 6. Proxy Pattern
 Purpose: Acts as an intermediary to control access to an object.
 How It Works: Useful for caching, logging, or access control.
 Benefits: Adds additional behavior without altering the original object.
@@ -835,7 +835,7 @@ console.log(proxy.getData()); // Cached data
 
 ```
 
-7. Builder Pattern
+#### 7. Builder Pattern
 Purpose: Constructs complex objects step by step.
 How It Works: Separates object construction from its representation.
 Benefits: Useful for creating objects with multiple optional properties.
@@ -875,7 +875,7 @@ console.log(user);
 
 ```
 
-8. Strategy Pattern
+#### 8. Strategy Pattern
 Purpose: Encapsulates different algorithms or strategies and makes them interchangeable.
 How It Works: Delegates behavior to different strategy objects at runtime.
 Benefits: Reduces conditional logic and promotes flexibility.
@@ -906,7 +906,7 @@ payment.execute(100);
 
 ```
 
-9. Async Pattern (Callback, Promises, and Async/Await)
+#### 9. Async Pattern (Callback, Promises, and Async/Await)
 Purpose: Handles asynchronous operations efficiently.
 How It Works: Leverages patterns like callbacks, Promises, or async/await for non-blocking operations.
 Benefits: Avoids callback hell and manages complex async workflows.
